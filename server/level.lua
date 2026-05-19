@@ -52,18 +52,22 @@ end)
 lib.callback.register('lunar_fishing:getLevel', function(source)
     local player = Framework.getPlayerFromId(source)
 
-    if not player then return end
+    if not player then 
+        return 1 -- Retorna nível 1 como padrão
+    end
 
-    local identifier = player:getIdentifier()
+    -- Verifica se o cw-rep existe
+    if not exports["cw-rep"] then
+        return 1
+    end
 
-    -- if not levels[identifier] then
-    --     createPlayer(identifier)
-    -- end
+    local success, playerSkills = pcall(function()
+        return exports["cw-rep"]:fetchSkills(source)
+    end)
 
-    -- return levels[identifier]
-
-    local playerSkills = exports["cw-rep"]:fetchSkills(source)
-    -- print('getLevel getLevel getLevel',source, ' fishing skills:',playerSkills.fishing)
+    if not success or not playerSkills or not playerSkills.fishing then
+        return 1
+    end
 
     return playerSkills.fishing
 end)

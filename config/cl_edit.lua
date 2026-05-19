@@ -42,7 +42,7 @@ end
 function SetVehicleFuel(vehicle, fuelLevel)
     if GetResourceState('LegacyFuel') == 'started' then
         exports['LegacyFuel']:SetFuel(vehicle, fuelLevel)
-    elseif GetResourceState('ox_fuel') then
+    elseif GetResourceState('ox_fuel') == 'started' then
         Entity(vehicle).state.fuel = fuelLevel
     end
 end

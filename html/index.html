@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunar Fishing Tablet</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="app-container" style="display: none;">
+        <div class="tablet-main">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <div class="logo">
+                    <i class="fas fa-hook"></i>
+                    <span>LUNAR</span>
+                </div>
+                <nav>
+                    <button class="nav-btn active" data-tab="profile">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Perfil</span>
+                    </button>
+                    <button class="nav-btn" data-tab="store">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Loja</span>
+                    </button>
+                    <button class="nav-btn" data-tab="market">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Mercado</span>
+                    </button>
+                    <button class="nav-btn" data-tab="boats">
+                        <i class="fas fa-ship"></i>
+                        <span>Barcos</span>
+                    </button>
+                </nav>
+                <div class="sidebar-footer">
+                    <button id="closeTablet" class="btn-close">
+                        <i class="fas fa-power-off"></i>
+                        <span>Sair</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="content">
+                <header class="content-header">
+                    <div class="header-info">
+                        <h1 id="currentTabTitle">Perfil do Pescador</h1>
+                        <p id="currentTabDesc">Veja seu progresso e conquistas.</p>
+                    </div>
+                    <div class="header-stats">
+                        <div class="balance">
+                            <span class="label">SALDO DISPONÍVEL</span>
+                            <span class="value" id="playerBalance">R$ 0</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="tab-content" id="tab-profile">
+                    <div class="profile-grid">
+                        <div class="card stat-card level-card">
+                            <div class="card-header">
+                                <i class="fas fa-award"></i>
+                                <span>PROGRESSO DE CARREIRA</span>
+                            </div>
+                            <div class="level-display">
+                                <span class="level-num" id="currentLevel">1</span>
+                                <div class="level-info">
+                                    <span class="level-label">NÍVEL ATUAL</span>
+                                    <span class="level-xp" id="levelXpText">0 / 100 XP</span>
+                                </div>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" id="levelProgressBar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card info-card">
+                            <div class="card-header">
+                                <i class="fas fa-circle-info"></i>
+                                <span>RESUMO DA CARREIRA</span>
+                            </div>
+                            <div class="info-list">
+                                <div class="info-item">
+                                    <span class="label">PEIXES PESCADOS</span>
+                                    <span class="value" id="totalCaught">0</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">MAIOR CAPTURA</span>
+                                    <span class="value" id="biggestCatch">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content hidden" id="tab-store">
+                    <div class="category-section">
+                        <h2>Varas de Pesca</h2>
+                        <div class="items-grid" id="rodsContainer"></div>
+                    </div>
+                    <div class="category-section">
+                        <h2>Iscas & Acessórios</h2>
+                        <div class="items-grid" id="baitsContainer"></div>
+                    </div>
+                </div>
+
+                <div class="tab-content hidden" id="tab-market">
+                    <div class="market-header">
+                        <div class="market-timer">
+                            <i class="fas fa-clock"></i>
+                            <span>O mercado atualiza a cada 1 hora.</span>
+                        </div>
+                    </div>
+                    <div class="items-grid" id="marketContainer"></div>
+                </div>
+
+                <div class="tab-content hidden" id="tab-boats">
+                    <div class="items-grid" id="boatsContainer"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Notification Overlay -->
+    <div id="notification-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

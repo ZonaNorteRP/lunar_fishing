@@ -24,11 +24,14 @@ local qs_inventory = GetResourceState('qs-inventory') == 'started'
 
 function Framework.getItemLabel(item)
     if ox_inventory then
-        return exports.ox_inventory:Items()[item]?.label
+        local itemData = exports.ox_inventory:Items()[item]
+        return itemData and itemData.label
     elseif qs_inventory then
-        return exports['qs-inventory']:GetItemList()[item]?.label
+        local itemData = exports['qs-inventory']:GetItemList()[item]
+        return itemData and itemData.label
     end
-    return sharedObject.Shared.Items[item]?.label
+    local itemData = sharedObject.Shared.Items[item]
+    return itemData and itemData.label
 end
 
 function Framework.getItems()
@@ -67,7 +70,8 @@ function player:canCarryItem(name, count)
 end
 
 function player:getItemCount(name)
-    return self.QBPlayer.Functions.GetItemByName(name)?.amount or 0
+    local item = self.QBPlayer.Functions.GetItemByName(name)
+    return item and item.amount or 0
 end
 
 function player:getAccountMoney(account)

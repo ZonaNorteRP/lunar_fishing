@@ -81,6 +81,14 @@ for _, rod in ipairs(Config.fishingRods) do
                 busy[source] = nil
                 return
             end
+
+            -- Verifica se o jogador tem nível suficiente para pescar nesta zona
+            local playerLevel = lib.callback.await('lunar_fishing:getLevel', source)
+            if data.minLevel > playerLevel then
+                TriggerClientEvent('lunar_fishing:showNotification', source, 'Você precisa do nível ' .. data.minLevel .. ' de pesca para pescar nesta área. (Seu nível: ' .. math.floor(playerLevel) .. ')', 'error')
+                busy[source] = nil
+                return
+            end
         end
 
         local fishList = currentZone and Config.fishingZones[currentZone.index].fishList or Config.outside.fishList

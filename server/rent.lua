@@ -8,7 +8,7 @@ lib.callback.register('lunar_fishing:rentVehicle', function(source, index)
 
     local boat = Config.renting.boats[index]
 
-    if player:getAccountMoney(Config.renting.account) > boat.price then
+    if player:getAccountMoney(Config.renting.account) >= boat.price then
         player:removeAccountMoney(Config.renting.account, boat.price)
         pending[source] = true
         return true

@@ -21,16 +21,26 @@ local function updateBlips(level)
 
     table.wipe(blips)
 
-    for _, zone in ipairs(Config.fishingZones) do
-        if zone.blip and zone.minLevel <= level then
-            for _, coords in ipairs(zone.locations) do
+    -- Agora mostra TODAS as zonas, independente do nível
+    for i, zone in ipairs(Config.fishingZones) do
+        if zone.blip then
+            for j, coords in ipairs(zone.locations) do
+                -- Determina a cor do blip baseado no nível
+                local blipColor = zone.blip.color
+                local blipName = Config.BlipName or zone.blip.name -- Usa nome global se definido
+                
+                -- Se o jogador não tem nível suficiente, deixa o blip mais escuro/diferente
+                if zone.minLevel > level then
+                    blipColor = 2 -- Cor vermelha para zonas bloqueadas
+                end
+                
                 local blip = Utils.createBlip(coords, {
-                    name = zone.blip.name,
+                    name = blipName,
                     sprite = zone.blip.sprite,
-                    color = 0,
+                    color = blipColor,
                     scale = zone.blip.scale
                 })
-                local radiusBlip = Utils.createRadiusBlip(coords, zone.radius, zone.blip.color)
+                local radiusBlip = Utils.createRadiusBlip(coords, zone.radius, blipColor)
                 
                 table.insert(blips, { normal = blip, radius = radiusBlip })
             end
@@ -46,41 +56,51 @@ local function updateZones(level)
 
     table.wipe(zones)
 
+    -- Cria TODAS as zonas, independente do nível
     for index, data in ipairs(Config.fishingZones) do
-        if data.minLevel <= level then
-            for locationIndex, coords in ipairs(data.locations) do
-                local zone = lib.zones.sphere({
-                    coords = coords,
-                    radius = data.radius,
-                    onEnter = function()
-                        if currentZone?.index == index and currentZone?.locationIndex == index then return end
+        for locationIndex, coords in ipairs(data.locations) do
+            local zone = lib.zones.sphere({
+                coords = coords,
+                radius = data.radius,
+                onEnter = function()
+                    if currentZone and currentZone.index == index and currentZone.locationIndex == locationIndex then return end
 
-                        currentZone = { index = index, locationIndex = locationIndex }
-    
-                        if data.message then
-                            ShowNotification(data.message.enter, 'success')
-                        end
-                    end,
-                    onExit = function()
-                        if currentZone?.index ~= index
-                        or currentZone?.locationIndex ~= locationIndex then return end
-    
-                        currentZone = nil
-
-                        if data.message then
-                            ShowNotification(data.message.exit, 'inform')
-                        end
+                    -- Verifica se o jogador tem nível suficiente
+                    local currentLevel = GetCurrentLevel()
+                    if data.minLevel > currentLevel then
+                        ShowNotification('Você precisa do nível ' .. data.minLevel .. ' de pesca para acessar esta área. (Seu nível: ' .. currentLevel .. ')', 'error')
+                        return
                     end
-                })
-    
-                table.insert(zones, zone)
-            end
+
+                    currentZone = { index = index, locationIndex = locationIndex }
+
+                    if data.message then
+                        ShowNotification(data.message.enter, 'success')
+                    end
+                end,
+                onExit = function()
+                    if not currentZone or (currentZone.index ~= index or currentZone.locationIndex ~= locationIndex) then return end
+
+                    currentZone = nil
+
+                    if data.message then
+                        ShowNotification(data.message.exit, 'inform')
+                    end
+                end
+            })
+
+            table.insert(zones, zone)
         end
     end
 end
 
 ---@param level integer
 function Update(level)
+    -- Verifica se o Config está carregado
+    if not Config or not Config.fishingZones then
+        return
+    end
+    
     updateBlips(level)
     updateZones(level)
 end
@@ -123,13 +143,13 @@ end)
 local function setCanRagdoll(state)
     SetPedCanRagdoll(cache.ped, state)
     SetPedCanRagdollFromPlayerImpact(cache.ped, state)
-    SetPedRagdollOnCollision(cache.ped,statefalse)
+    SetPedRagdollOnCollision(cache.ped, state)
 end
 
 ---@param bait FishingBait
 ---@param fish Fish
 lib.callback.register('lunar_fishing:itemUsed', function(bait, fish)
-    local zone = Config.fishingZones[currentZone] or Config.outside
+    local zone = (currentZone and Config.fishingZones[currentZone.index]) or Config.outside
 
     local object = createRodObject()
     lib.requestAnimDict('mini@tennis')

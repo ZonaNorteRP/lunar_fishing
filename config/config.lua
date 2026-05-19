@@ -1,5 +1,6 @@
 Config = {}
 
+Config.BlipName = 'Área de Pesca' -- Nome único para todos os blips de áreas de pesca
 Config.progressPerCatch = 5 -- The progress per one fish caught
 
 ---@class Fish
@@ -60,14 +61,14 @@ Config.baits = {
 Config.fishingZones = {
     {
         blip = {
-            name = 'Coral Reef',
+            name = 'Corais',
             sprite = 317,
-            color = 24,
+            color = 30,
             scale = 0.6
         },
         locations = {
-            vector3(-1774.0654, -1796.2740, 0.0),
-            vector3(2482.8589, -2575.6780, 0.0)
+            vector3(1628.42, 7915.38, 0.0),
+            vector3(3279.81, 1088.43, 0.0)
         },
         radius = 250.0,
         minLevel = 1,
@@ -78,7 +79,7 @@ Config.fishingZones = {
     },
     {
         blip = {
-            name = 'Deep Waters',
+            name = 'Aguas fundas',
             sprite = 317,
             color = 29,
             scale = 0.6
@@ -95,7 +96,7 @@ Config.fishingZones = {
     },
     {
         blip = {
-            name = 'Swamp',
+            name = 'Pantano',
             sprite = 317,
             color = 56,
             scale = 0.6
@@ -150,9 +151,9 @@ Config.renting = {
     model = 's_m_m_dockwork_01', -- The ped model
     account = 'money',
     boats = {
-        { model = `speeder`, price = 500, image = 'https://i.postimg.cc/mDSqWj4P/164px-Speeder.webp' },
-        { model = `dinghy`, price = 750, image = 'https://i.postimg.cc/ZKzjZgj0/164px-Dinghy2.webp'  },
-        { model = `tug`, price = 1250, image = 'https://i.postimg.cc/jq7vpKHG/164px-Tug.webp' }
+        { model = `speeder`, label = 'Speeder', price = 500, image = 'https://i.postimg.cc/mDSqWj4P/164px-Speeder.webp' },
+        { model = `dinghy`, label = 'Dinghy', price = 750, image = 'https://i.postimg.cc/ZKzjZgj0/164px-Dinghy2.webp'  },
+        { model = `tug`, label = 'Tug', price = 1250, image = 'https://i.postimg.cc/jq7vpKHG/164px-Tug.webp' }
     },
     blip = {
         name = 'Aluguel de Barcos',

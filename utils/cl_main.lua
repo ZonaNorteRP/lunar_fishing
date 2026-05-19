@@ -161,13 +161,12 @@ function Utils.createBlip(coords, data)
 end
 
 ---@param coords vector3 | vector4
----@param scale number
+---@param radius number
 ---@param color integer
-function Utils.createRadiusBlip(coords, scale, color)
-    local blip = AddBlipForRadius(coords.x, coords.y, coords.z, scale)
+function Utils.createRadiusBlip(coords, radius, color)
+    local blip = AddBlipForRadius(coords.x, coords.y, coords.z, radius)
 
     SetBlipDisplay(blip, 4)
-    SetBlipScale  (blip, scale)
     SetBlipColour (blip, color)
     SetBlipAsShortRange(blip, true)
     SetBlipAlpha(blip, 150)

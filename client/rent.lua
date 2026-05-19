@@ -33,14 +33,19 @@ local function spawnBoat(boat)
     end
 end
 
-local function rentVehicle(index)
+local function rentVehicle(index, bypassConfirm)
     local boat = Config.renting.boats[index]
-    local confirmed = lib.alertDialog({
-        header = locale('rent_heading'),
-        content = locale('rent_content', boat.price),
-        centered = true,
-        cancel = true
-    }) == 'confirm'
+    if not boat then return end
+
+    local confirmed = true
+    if not bypassConfirm then
+        confirmed = lib.alertDialog({
+            header = locale('rent_heading'),
+            content = locale('rent_content', boat.price),
+            centered = true,
+            cancel = true
+        }) == 'confirm'
+    end
 
     if not confirmed then return end
 
@@ -52,6 +57,10 @@ local function rentVehicle(index)
         ShowNotification(locale('not_enough_' .. Config.renting.account), 'error')
     end
 end
+
+RegisterNetEvent('lunar_fishing:client:rentBoatFromNui', function(index)
+    rentVehicle(index, true)
+end)
 
 do
     local options = {}
@@ -150,7 +159,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
                 label = locale('rent_boat'),
                 icon = 'ship',
                 onSelect = function()
-                    lib.showContext('rent_boat')
+                    OpenFishingTablet()
                 end
             }
         })

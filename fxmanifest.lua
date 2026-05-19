@@ -7,8 +7,13 @@ author 'Lunar Scripts'
 description 'Advanced Fishing'
 version '1.0.1'
 
+ui_page 'html/index.html'
+
 files {
-    'locales/*.json'
+    'locales/*.json',
+    'html/index.html',
+    'html/style.css',
+    'html/script.js'
 }
 
 shared_scripts {
@@ -20,6 +25,7 @@ client_scripts {
     'framework/**/client.lua',
     'utils/cl_main.lua',
     'config/cl_edit.lua',
+    'client/nui.lua',
     'client/*.lua'
 }
 

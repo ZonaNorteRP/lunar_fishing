@@ -10,7 +10,8 @@ local function sell(fishName)
             min = 1,
             required = true
         }
-    })?[1] --[[@as number?]]
+    })
+    amount = amount and amount[1] --[[@as number?]]
 
     if not amount then
         lib.showContext('sell_fish')
@@ -71,7 +72,7 @@ end
 
 ---@param data { type: string, index: integer }
 local function buy(data)
-    local type, index in data
+    local type, index = data.type, data.index
     local item = Config[type][index]
     local amount = lib.inputDialog(locale('buy_heading', Utils.getItemLabel(item.name), item.price), {
         {
@@ -80,7 +81,8 @@ local function buy(data)
             min = 1,
             required = true
         }
-    })?[1] --[[@as number?]]
+    })
+    amount = amount and amount[1] --[[@as number?]]
 
     if not amount then
         lib.showContext(type == 'fishingRods' and 'buy_rods' or 'buy_baits')
@@ -153,46 +155,7 @@ local function buyBaits()
 end
 
 local function open()
-    local level, progress = GetCurrentLevel(), GetCurrentLevelProgress() * 100
-    local xp = exports["cw-rep"]:getCurrentSkill('fishing')
-    local level = exports["cw-rep"]:getCurrentLevel('fishing')
-        
-    lib.registerContext({
-        id = 'fisherman',
-        title = locale('fisherman'),
-        options = {
-            {
-                title = locale('level', level),
-                description = locale('level_desc', (100*(level+1))-xp),
-                icon = 'chart-simple',
-                progress = xp-(100*level),
-                colorScheme = 'lime'
-            },
-            {
-                title = locale('buy_rods'),
-                description = locale('buy_rods_desc'),
-                icon = 'dollar-sign',
-                arrow = true,
-                onSelect = buyRods
-            },
-            {
-                title = locale('buy_baits'),
-                description = locale('buy_baits_desc'),
-                icon = 'worm',
-                arrow = true,
-                onSelect = buyBaits
-            },
-            {
-                title = locale('sell_fish'),
-                description = locale('sell_fish_desc'),
-                icon = 'fish',
-                arrow = true,
-                onSelect = sellFish
-            }
-        }
-    })
-
-    lib.showContext('fisherman')
+    OpenFishingTablet()
 end
 
 local function createPeds()
